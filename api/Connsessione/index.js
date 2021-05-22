@@ -8,6 +8,7 @@ module.exports = async function (context, req) {
   const database = client.db("PrenotaFacile");
   var collection = database.collection("Users");
   var list = await collection.find({}).toArray();
+  
   collection=database.collection("Prenotazioni");
   var preno=await collection.find({}).toArray();
   collection=database.collection("Luoghi");
@@ -16,5 +17,6 @@ module.exports = async function (context, req) {
     status: 200,
     body: {"users":list,"prenotazioni":preno,"luoghi":luoghi},
   };
+
   return context.res
 };

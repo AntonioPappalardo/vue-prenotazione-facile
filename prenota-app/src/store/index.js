@@ -15,7 +15,31 @@ export const store =  new Vuex.Store({ //creazione dello store
         },
         getUserByUser:(state)=>(username)=>{
             return state.Users.find(user => (user.username===username))
+        },
+        getLuoghi:(state)=>{
+            return state.Luoghi;
+        },
+        getLuoghiByType:(state)=> (type)=>{
+            return state.Luoghi.filter(luogo =>(luogo.type===type))
+            
+        },
+        getPrenotazioneByPenotazione:(state)=>(id,data,orario,intervallo)=>{
+            
+            var posti=state.Luoghi.find(luogo=> (luogo.id==id)).posti;
+            var p=(state.Prenotazioni.filter(prenotazione =>(prenotazione.luogo=== id && prenotazione.data=== data)));
+            var pos=0;
+            for(let i=0;i<p.length; i++){
+                let oinit=(parseInt(p[i].orario.substring(0,2),10)*60)+parseInt(p[i].orario.substring(3,5),10);
+                let oend=oinit+p[i].intervallo;
+                let scelta_iniziale=(parseInt(orario.substring(0,2),10)*60)+parseInt(orario.substring(3,5),10);
+                let scelta_Intervallo=scelta_iniziale+parseInt(intervallo,10);
+                console.log(oinit,oend,scelta_iniziale,scelta_Intervallo)
+                if(scelta_iniziale>oinit && scelta_iniziale<oend) pos++;
+                else if(scelta_Intervallo>oinit&& scelta_Intervallo<oend)pos++;
+            }
+            return posti>pos;
         }
+
     },
   
     mutations: {
@@ -27,6 +51,9 @@ export const store =  new Vuex.Store({ //creazione dello store
         },
         setLuoghi:(state,luoghi) =>{
             state.Luoghi=luoghi
+        },
+        RegUser:(state,user) =>{
+            state.Users.push(user)
         }
      },
     
@@ -39,6 +66,9 @@ export const store =  new Vuex.Store({ //creazione dello store
         },
         setPrenotazioni( {commit}, pos){
             commit('setPrenotazioni',pos);
+        },
+        RegUser( {commit}, user){
+            commit('RegUser',user);
         }  
     }
   

@@ -63,12 +63,12 @@ export default {
                 this.errore=true;
                 this.errormsg="Errore Password: deve essere Lunga almeno 8 caratteri"
             }
-            
             else
             if(!passre.test(this.password)){
                 this.errore=true;
                 this.errormsg="La Password deve contenere: una lettera minuscola una lettera maiuscola un numero"
             }
+            else this.saveDB();
 
         },
         saveDB(){
@@ -81,6 +81,15 @@ export default {
                 "service":this.option2
             }
             });
+            
+            var user={
+                "username":this.username,
+                "password":this.password,
+                "type":this.type,
+                "notification":this.option1,
+                "service":this.option2
+            }
+            this.$store.dispatch('RegUser',user)
             this.$router.push("/bacheca")
         }
     },

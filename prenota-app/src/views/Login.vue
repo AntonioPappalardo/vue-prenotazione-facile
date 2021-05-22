@@ -29,6 +29,16 @@
 </template>
 
 <script>
+import axios from 'axios'
+axios.defaults.crossDomain= true;
+function getAxiosConfig() {
+      const config = {
+        headers: {}
+      };
+      return config;
+    }
+
+  
 export default {
     name:'login',
     data(){
@@ -50,6 +60,9 @@ export default {
                 this.errore=false;
                 this.$session.start();
                 this.$session.set('user',this.user)
+                axios.post('https://prenotazionefacile.azurewebsites.net/api/HttpTrigger1',
+                {"use":this.username},getAxiosConfig());
+                this.$router.push("/bacheca")
             }
         },
         islog(){
