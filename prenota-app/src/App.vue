@@ -29,28 +29,20 @@ import { store } from './store/index'   // import dello store
 import * as signalR from "@aspnet/signalr"
 import axios from 'axios'
 axios.defaults.crossDomain= true;
-      const connection = new signalR.HubConnectionBuilder()
-                          .withUrl("https://prenotazionefacile.azurewebsites.net/api")
-                          .build();
-  connection.on("updated", modifica);
-  connection.onclose(()  => {
-      console.log('SignalR connection disconnected');
-  });
 
-
-
-  connection.start().then(() => {
-      console.log("SignalR connection established");
-  });
-  function modifica(modi){
-    console.log("caio, ",modi)
-  }
 export default {
   name: 'App',
   store,
   data(){
     return{
+      connection:""
     }
+  },
+  created: function(){
+  this.connection = new signalR.HubConnectionBuilder()
+                  .withUrl("https://prenotazionefacile.azurewebsites.net/api")
+                  .build();
+
   },
   methods: {
     logout(){
@@ -69,6 +61,14 @@ export default {
       axios.get('https://prenotazionefacile.azurewebsites.net/api/HttpTrigger1?').then(response =>{
         console.log(response.data)
       });
+      this.connection.start().then(() => {
+      console.log("SignalR connection established");
+      });
+      this.connection.on("updated", this.prenota);
+      this.connection.onclose(()  => {
+      console.log('SignalR connection disconnected');
+});
+
   },
 }
 

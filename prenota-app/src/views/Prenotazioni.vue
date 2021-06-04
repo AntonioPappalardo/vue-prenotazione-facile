@@ -2,7 +2,7 @@
     <div class="all-prenotazioni">
         <AlertData  v-if="showAlertData" id="overlay" v-on:close="showAlertData=false"/>
         <AlertIncomplete v-if="showAlertIncomplete" id="overlay" v-on:close="showAlertIncomplete=false"/>
-        <AlertConfirm v-if="showAlertConfirm" id="overlay" v-on:close="showAlertConfirm=false;annulla()" v-on:conferma="showAlertConfirm=false; conferma()"/>
+        <AlertConfirm :data="this.prenotazione" v-if="showAlertConfirm" id="overlay" v-on:close="showAlertConfirm=false;annulla()" v-on:conferma="showAlertConfirm=false; conferma()"/>
         <AlertError v-if="showAlertError" id="overlay" v-on:close="showAlertError=false"/>
         <div class="form">
            <div>
@@ -47,6 +47,14 @@ var vueData = {};
 
 vueData.mydate = "";
 
+import axios from 'axios';
+axios.defaults.crossDomain= true;
+function getAxiosConfig() {
+      const config = {
+        headers: {}
+      };
+      return config;
+    }
 var todayData={};
 todayData.mydate="17/11/2020";
 import AlertData from './alerts/alertDate'
@@ -58,6 +66,8 @@ export default {
     data() {
         return {
             showAlertData:false,
+            username:'',
+            luogo:'0',
             showAlertIncomplete:false,
             showAlertConfirm:false,
             showAlertError:false,
@@ -73,7 +83,9 @@ export default {
                 "13:10",
                 "13:20",
                 "13:30"
-            ]
+            ],
+            nprenotazione:0,
+            prenotazione:''
         }
     },
     mounted() {
@@ -86,11 +98,11 @@ export default {
     else day=(todayData.getDate())
     var datacur=''+todayData.getFullYear()+'-'+month+'-'+day;
     this.today.mydate=datacur;
-    var user=(this.$session.get('user'))
-    if (user.type==1) this.isStudent=true
-    else this.isStudent=false
-    this.formData.mydate=null
-
+    var user=(this.$session.get('user'));
+    if (user.type==1) this.isStudent=true;
+    else this.isStudent=false;
+    this.formData.mydate=null;
+    this.username=user.username;
     },
     computed:{
 
@@ -111,7 +123,29 @@ export default {
             this.intervallo=0;
         },
         conferma(){
-            console.log("PRENOTA");
+            
+            this.nprenotazione=this.$store.getters.getCountPrenotazioni;
+            axios.get("https://prenotazionefacile.azurewebsites.net/api/Prenotazione",{params:
+            {
+                "id": this.nprenotazione,
+                "luogo":this.luogo,
+                "data":this.formData.mydate,
+                "intervallo":this.intervallo,
+                "username":this.username,
+                "orario":this.orario
+            }
+            }); 
+            this.prenotazione={
+                "id": this.nprenotazione,
+                "luogo":this.luogo,
+                "data":this.formData.mydate,
+                "intervallo":this.intervallo,
+                "username":this.username,
+                "orario":this.orario
+            }
+            axios.post('https://prenotazionefacile.azurewebsites.net/api/HttpTrigger1',
+            {"use":this.prenotazione},getAxiosConfig());
+            this.$store.dispatch('Prenota',this.prenotazione)
             this.$router.push("/bacheca")
         },
         updateLuoghi(){
@@ -130,8 +164,17 @@ export default {
             }
         },
         LuogoScelto(id){
+            this.luogo=id;
             if(this.formData.mydate!==null && this.orario !== null && this.intervallo!== 0){
                 if(this.$store.getters.getPrenotazioneByPenotazione(id,this.formData.mydate,this.orario,this.intervallo)){
+                    this.prenotazione={
+                        "id": this.nprenotazione,
+                        "luogo":this.luogo,
+                        "data":this.formData.mydate,
+                        "intervallo":this.intervallo,
+                        "username":this.username,
+                        "orario":this.orario
+                    }
                     this.showAlertConfirm=true;
                 }
                 else{
