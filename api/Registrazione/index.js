@@ -12,7 +12,9 @@ module.exports = async function (context, req) {
     "password":req.query.password,
     "type":req.query.type,
     "notification":req.query.notification,
-    "IA-Service":req.query.service,
+    "service":req.query.service,
+    "confirmed":false,
+    "code":req.query.code
     };
     await collection.insertOne(data);
     context.res = {

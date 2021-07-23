@@ -1,5 +1,7 @@
 <template>
     <div class="log">
+    <AlertValidateEmail :code="this.code" id="overlay" v-on:close="verificationCode()" v-if="showAlert"/>
+
         <div class="login">
             
             <div class="alert-danger" v-if="errore" >
@@ -31,7 +33,7 @@
 <script>
 import axios from 'axios'
 axios.defaults.crossDomain= true;
-
+import AlertValidateEmail from './alerts/alertValidateEmail.vue'
 
   
 export default {
@@ -41,7 +43,9 @@ export default {
             username:"",
             password:"",
             errore:false,
-            user:null
+            user:null,
+            code:"",
+            showAlert:false
         }
     }, 
     beforeCreate(){
@@ -53,13 +57,27 @@ export default {
             if(this.user==null){this.errore=true}
             else{
                 this.errore=false;
+                if(!this.user.confirmed) {
+                    this.code=""+this.user.code
+                    this.showAlert=true
+                } 
+                else{             
                 this.$session.start();
                 this.$session.set('user',this.user)
                 this.$router.push("/bacheca")
+                }
             }
         },
         islog(){
              return this.$session.exists()
+        },
+        verificationCode(){
+            this.showAlert=false
+            axios.get("https://prenotazionefacile.azurewebsites.net/api/EmailVerificated",{params:{"username":this.username}});
+            this.$store.dispatch("setEmailVerificated",this.user)
+            this.$session.start();
+            this.$session.set('user',this.user)
+            this.$router.push("/bacheca")
         }
 
     },
@@ -70,6 +88,9 @@ export default {
         password: function(){
             this.errore=false
         }
+    },
+    components:{
+        AlertValidateEmail
     }
 }
 </script>
@@ -96,5 +117,19 @@ export default {
     .alert-primary{
         border-radius: 15px;
     }
+}
+#overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%; 
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

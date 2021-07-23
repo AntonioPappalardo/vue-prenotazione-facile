@@ -19,6 +19,9 @@ export default {
             datacur:''
         }
     },
+    beforeCreate(){
+        if(!this.$session.exists()){this.$router.push("/")}
+    },
     computed:{
         prenotazioni(){
             return this.$store.getters.getPrenotazioniByUser(this.datacur,this.username);
@@ -48,12 +51,13 @@ export default {
 
     .view-prenotazioni{
         width: 100%;
+        height: calc(100vh - 250px);
         display: grid;
         overflow-y: scroll;
         grid-row-gap: 10px;
         grid-auto-rows: min-content;
         padding: 5px;
-        align-content: center;
+        margin-top:50px ;
         .prenotazione{
             display: grid;
             grid-template-columns: 100px calc(100% - 200px) 100px;

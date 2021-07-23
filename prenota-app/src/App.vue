@@ -1,13 +1,12 @@
 <template>  
   <div id="app">
     <div class="all" v-if="(this.$route.path!=='/') && (this.$route.path!=='/registrazione')"> 
-      <div class="header"></div>
+      <Header/>
       <div class="content">
         <div class="sidebar">
           <div class="options">
             <div class="link"><router-link to="/bacheca">Bacheca</router-link></div>
             <div class="link"><router-link to="/prenotazione">Prenota</router-link></div>
-            <div class="link" @click="logout()">LogOut</div>
           </div>
         </div>
         <div class="content2">
@@ -28,6 +27,7 @@ import { store } from './store/index'   // import dello store
 
 import * as signalR from "@aspnet/signalr"
 import axios from 'axios'
+import Header from './views/Components/Header.vue'
 axios.defaults.crossDomain= true;
 
 export default {
@@ -37,6 +37,9 @@ export default {
     return{
       connection:""
     }
+  },
+  components:{
+    Header
   },
   created: function(){
   this.connection = new signalR.HubConnectionBuilder()
@@ -48,23 +51,23 @@ export default {
     logout(){
        this.$session.destroy();
       this.$router.push("/")
+    },
+    Prenota(prenotazione){
+      this.$store.dispatch('Prenota',prenotazione.use);
     }
   },
-    mounted () {
-      
-      axios.get('https://prenotazionefacile.azurewebsites.net/api/Connsessione?').then(response =>{
+    mounted () {    
+      axios.get('https://prenotazionefacile.azurewebsites.net/api/Connessione?').then(response =>{
       this.$store.dispatch('setUsers',response.data.users);
       this.$store.dispatch('setPrenotazioni',response.data.prenotazioni);
       this.$store.dispatch('setLuoghi',response.data.luoghi);
+      this.$store.dispatch('setDependence',response.data.dependence)
       
-      });
-      axios.get('https://prenotazionefacile.azurewebsites.net/api/HttpTrigger1?').then(response =>{
-        console.log(response.data)
       });
       this.connection.start().then(() => {
       console.log("SignalR connection established");
       });
-      this.connection.on("updated", this.prenota);
+      this.connection.on("updated",this.Prenota);
       this.connection.onclose(()  => {
       console.log('SignalR connection disconnected');
 });
@@ -93,10 +96,7 @@ export default {
     background-repeat: no-repeat; /* Do not repeat the image */
     background-size: cover; 
     
-    .header{
-      width: 100%;
-      background-color: rgba(238, 112, 66, 0.52);
-    }
+
     .content{
       width: 100%;
       height: 100%;
@@ -106,7 +106,7 @@ export default {
       .sidebar{
         
         display: flex;
-        height: 100%;
+        height: calc(100vh - 100px);
         background-color: rgba(0, 255, 255, 0.52);
         vertical-align: middle;
         .options{
@@ -124,9 +124,11 @@ export default {
         }
       }
       .content2{
+        height: calc(100vh - 100px);
         display: flex;
         align-items: center;
         justify-content: center;
+        
       }
     }
   }

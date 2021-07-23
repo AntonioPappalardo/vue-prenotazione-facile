@@ -72,13 +72,16 @@ export default {
 
         },
         saveDB(){
+            var code=Math.floor(Math.random() * 9000)+1000
             axios.get("https://prenotazionefacile.azurewebsites.net/api/Registrazione",{params:
             {
                 "username":this.username,
                 "password":this.password,
                 "type":this.type,
                 "notification":this.option1,
-                "service":this.option2
+                "service":this.option2,
+                "confirmed":false,
+                "code":code
             }
             });
             
@@ -87,8 +90,20 @@ export default {
                 "password":this.password,
                 "type":this.type,
                 "notification":this.option1,
-                "service":this.option2
+                "service":this.option2,
+                "confirmed":false,
+                "code":code
             }
+            var email=this.username;
+            if(this.type==1)email= email+'@studenti.unisa.it'
+            else email= email+'@unisa.it'
+            axios.get("https://prenotazionefacile.azurewebsites.net/api/MailSender",{params:
+            {
+                "email":email,
+                "subject":"Conferma Registrazione",
+                "object":"Il codice di Verifica dell'email è:\n"+code
+            }
+            });
             this.$store.dispatch('RegUser',user)
             this.$router.push("/bacheca")
         }

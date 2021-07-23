@@ -18,20 +18,23 @@
                         <option value="4">Aula</option>
                     </select>
             <select v-model="type" v-else>
-                <option disabled value="1">Mensa</option>
+                <option selected value="1">Mensa</option>
             </select>
            </div>
             <div>
-            <h5>ORARIO:</h5><input type="time" v-model="orario" min="09:00" max="17:00" list="timeList">
+                <h5>ORARIO:</h5><vue-timepicker
+                            format="HH:mm"
+                            :minute-interval="15"
+                            :hour-range="[9,10,11,12,13,14,15,16,17]"
+                            fixed-dropdown-button
+                            v-model="orario">
+                            </vue-timepicker>
             </div>
             <div>
-            <h5>INTERVALLO:</h5> <input type="num" v-model="intervallo">
+                <h5>INTERVALLO:</h5> 
+                        <input type="number"  v-bind:min="optionmin" v-bind:max="optionmax" step="15" v-model="intervallo" onkeydown="return false">
             </div>
         </div>
-
-        <datalist id="timeList">
-            <option v-for="(option,index) in options"  :key="index" v-bind:value="option"/>
-        </datalist>
 
         <div class="luoghi-list">
         <div  class="luogo rounded-pill border border-primary" v-for="(place,index) in luoghi" :key="index" @click="LuogoScelto(place.id)">
@@ -46,7 +49,7 @@
 var vueData = {};
 
 vueData.mydate = "";
-
+import VueTimepicker from 'vue2-timepicker'
 import axios from 'axios';
 axios.defaults.crossDomain= true;
 function getAxiosConfig() {
@@ -72,37 +75,30 @@ export default {
             showAlertConfirm:false,
             showAlertError:false,
             formData:vueData,
-            intervallo:0,
+            intervallo:15,
             today:todayData,
             type:0,
-            orario:null,
+            orario:"09:00",
             luoghi:[],
             isStudent:true,
-            options:[
-                "13:00",
-                "13:10",
-                "13:20",
-                "13:30"
-            ],
             nprenotazione:0,
-            prenotazione:''
+            prenotazione:'',
+            optionmin:30,
+            optionmax:180
         }
     },
     mounted() {
-    var todayData = new Date();
-    var month='';
-    var day='';
-    if((todayData.getMonth()+1)<10) month= '0'+ (todayData.getMonth()+1)
-    else month=(todayData.getMonth()+1)
-    if((todayData.getDate())<10) day= '0'+ (todayData.getDate())
-    else day=(todayData.getDate())
-    var datacur=''+todayData.getFullYear()+'-'+month+'-'+day;
-    this.today.mydate=datacur;
-    var user=(this.$session.get('user'));
-    if (user.type==1) this.isStudent=true;
-    else this.isStudent=false;
-    this.formData.mydate=null;
-    this.username=user.username;
+        var todayData = new Date();
+        var datacur=this.transformData(todayData);
+        this.today.mydate=datacur;
+        var user=(this.$session.get('user'));
+        if (user.type==1) this.isStudent=true;
+        else this.isStudent=false;
+        this.formData.mydate=null;
+        this.username=user.username;
+    },
+    beforeCreate(){
+        if(!this.$session.exists()){this.$router.push("/")}
     },
     computed:{
 
@@ -123,7 +119,6 @@ export default {
             this.intervallo=0;
         },
         conferma(){
-            
             this.nprenotazione=this.$store.getters.getCountPrenotazioni;
             axios.get("https://prenotazionefacile.azurewebsites.net/api/Prenotazione",{params:
             {
@@ -134,7 +129,24 @@ export default {
                 "username":this.username,
                 "orario":this.orario
             }
-            }); 
+            });
+            var email;
+            if (this.isStudent) email=""+this.username+"@studenti.unisa.it"
+            else email=""+this.username+"@unisa.it" 
+            axios.get("https://prenotazionefacile.azurewebsites.net/api/MailSender",{params:
+            {
+                "email":email,
+                "subject":"Prenotazione",
+                "object":"La prenotazione è avvenuta correttamente\n"+ 
+                         "I dati sono: \n"+
+                         "Codice Prenotazione: "+this.nprenotazione+"\n"+
+                         "Luogo: "+this.$store.getters.getLuogoById(this.luogo).nome+"\n"+
+                         "Data: "+this.formData.mydate+"\n"+
+                         "Orario: "+this.orario+"\n"+
+                         "Durata: "+this.intervallo
+                
+            }
+            });
             this.prenotazione={
                 "id": this.nprenotazione,
                 "luogo":this.luogo,
@@ -143,9 +155,40 @@ export default {
                 "username":this.username,
                 "orario":this.orario
             }
-            axios.post('https://prenotazionefacile.azurewebsites.net/api/HttpTrigger1',
+            axios.post('https://prenotazionefacile.azurewebsites.net/api/PrenotaSignal',
             {"use":this.prenotazione},getAxiosConfig());
             this.$store.dispatch('Prenota',this.prenotazione)
+            
+            var typeluogo=this.$store.getters.getTypeById(this.luogo);
+            if(this.$store.getters.ExistDependence(this.formData.mydate,this.username,this.orario,typeluogo)){
+                    //UPDATE DEPENDECE
+                    //BISOGNA CREARE FUNCTION AZURE PER L'UPDATE
+                     axios.get('https://prenotazionefacile.azurewebsites.net/api/UpdateDependence',{
+                        params:{
+                            "user":this.username,
+                            "day":day,
+                            "luogo":typeluogo,
+                            "orario":this.orario
+                        }
+                    })
+            }
+            else{
+                var dataselected= new Date(this.formData.mydate);
+                var day=dataselected.getDay();
+                if(this.$store.getters.CreateDependence(this.formData.mydate,this.username,this.orario,typeluogo))
+                {
+                    axios.get('https://prenotazionefacile.azurewebsites.net/api/CreateDependence',{
+                        params:{
+                            "user":this.username,
+                            "day":day,
+                            "luogo":typeluogo,
+                            "orario":this.orario
+                        }
+                    })
+                    
+                }
+            }
+            
             this.$router.push("/bacheca")
         },
         updateLuoghi(){
@@ -153,6 +196,16 @@ export default {
             var a=this.$store.getters.getLuoghiByType(this.type);
             for(var i=0;i<a.length;i++){
             this.luoghi.push(a[i])
+            if(this.type==1){
+                this.optionmin=15;
+                this.intervallo=15
+                this.optionmax=60
+            }
+            else{
+                this.optionmin=30;
+                this.optionmax=180;
+                this.intervallo=30
+            }
             }
         },
         updateDate(){
@@ -185,16 +238,23 @@ export default {
                 this.showAlertIncomplete=true;
             }
         },
+        transformData(d){
+            var month= d.getMonth()+1<10 ? "0"+(d.getMonth()+1) : d.getMonth()+1
+            var day= d.getDay()<10 ? "0"+d.getDay(): d.getDay()
+            return(""+d.getFullYear()+"-"+month+"-"+day)
+        }
     },
     components:{
         AlertData,
         AlertIncomplete,
         AlertError,
         AlertConfirm,
+        VueTimepicker
     } 
 }
 </script>
 <style lang="scss" scoped>
+@import '~vue2-timepicker/dist/VueTimepicker.css';
 .all-prenotazioni{
     width: 100%;
     height: 100%;
