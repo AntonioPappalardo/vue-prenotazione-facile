@@ -91,6 +91,7 @@ export default {
         var todayData = new Date();
         var datacur=this.transformData(todayData);
         this.today.mydate=datacur;
+        console.log(this.today.mydate)
         var user=(this.$session.get('user'));
         if (user.type==1) this.isStudent=true;
         else this.isStudent=false;
@@ -148,6 +149,8 @@ export default {
             }
             });
             this.prenotazione={
+                "service":(this.$session.get('user')).service,
+                "occupati":(this.nprenotazione*100)/this.$store.getters.getLuogoById(this.luogo).posti,
                 "id": this.nprenotazione,
                 "luogo":this.luogo,
                 "data":this.formData.mydate,
@@ -220,7 +223,10 @@ export default {
             this.luogo=id;
             if(this.formData.mydate!==null && this.orario !== null && this.intervallo!== 0){
                 if(this.$store.getters.getPrenotazioneByPenotazione(id,this.formData.mydate,this.orario,this.intervallo)){
+                    console.log((this.$session.get('user')).service)
                     this.prenotazione={
+                        "service":(this.$session.get('user')).service,
+                        "occupati":(this.nprenotazione*100)/this.$store.getters.getLuogoById(this.luogo).posti,
                         "id": this.nprenotazione,
                         "luogo":this.luogo,
                         "data":this.formData.mydate,
@@ -240,7 +246,8 @@ export default {
         },
         transformData(d){
             var month= d.getMonth()+1<10 ? "0"+(d.getMonth()+1) : d.getMonth()+1
-            var day= d.getDay()<10 ? "0"+d.getDay(): d.getDay()
+            var day= d.getDate()<10 ? "0"+d.getDate(): d.getDate()
+            console.log()
             return(""+d.getFullYear()+"-"+month+"-"+day)
         }
     },

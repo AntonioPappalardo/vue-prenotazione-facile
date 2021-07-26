@@ -23,6 +23,7 @@
 </template>
 
 <script>
+
 import { store } from './store/index'   // import dello store
 
 import * as signalR from "@aspnet/signalr"
