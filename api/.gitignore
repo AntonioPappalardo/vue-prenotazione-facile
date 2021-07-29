@@ -93,5 +93,6 @@ bin
 obj
 appsettings.json
 local.settings.json
+
 # Timer Trigger
-dailymail
+dailymail/
