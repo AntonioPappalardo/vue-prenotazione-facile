@@ -11,7 +11,7 @@
 </template>
 <script>
 export default {
-    name:'AlertData',
+    name:'AlertUnavaible',
     methods: {
         ok(){
             this.$emit('close');
