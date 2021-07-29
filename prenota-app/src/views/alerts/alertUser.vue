@@ -2,7 +2,7 @@
     <div>
         <div class="alert">
             <h5 class="modal-header">{{this.user.username}}  
-              <i class="fas fa-sign-out-alt"></i>
+              <i class="fas fa-sign-out-alt" @click="logout()"></i>
 
             </h5>
             <div class="modal-body">
