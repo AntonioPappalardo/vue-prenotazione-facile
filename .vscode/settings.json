@@ -5,6 +5,5 @@
     "azureFunctions.projectRuntime": "~3",
     "debug.internalConsoleOptions": "neverOpen",
     "azureFunctions.preDeployTask": "npm prune",
-    "appService.defaultWebAppToDeploy": "/subscriptions/6058bc4c-7359-417d-acbb-422fd58a151c/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/Prenotazione-Facile",
     "appService.deploySubpath": "."
 }
