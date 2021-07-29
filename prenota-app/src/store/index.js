@@ -109,8 +109,8 @@ export const store =  new Vuex.Store({ //creazione dello store
                 let oend=oinit+el.intervallo;
                 let scelta_iniziale=(parseInt(prenotazione.orario.substring(0,2),10)*60)+parseInt(prenotazione.orario.substring(3,5),10);
                 let scelta_Intervallo=scelta_iniziale+parseInt(prenotazione.intervallo,10);
-                if(scelta_iniziale>oinit && scelta_iniziale<oend) {avaible=false; break;}
-                else if(scelta_Intervallo>oinit&& scelta_Intervallo<oend) {avaible=false; break;}
+                if(scelta_iniziale>oinit && scelta_iniziale<oend) {avaible=false;}
+                else if(scelta_Intervallo>oinit&& scelta_Intervallo<oend) {avaible=false;}
             })
             return unavaible
         }
