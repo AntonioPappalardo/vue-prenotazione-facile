@@ -3,6 +3,7 @@
         <AlertData  v-if="showAlertData" id="overlay" v-on:close="showAlertData=false"/>
         <AlertIncomplete v-if="showAlertIncomplete" id="overlay" v-on:close="showAlertIncomplete=false"/>
         <AlertConfirm :data="this.prenotazione" v-if="showAlertConfirm" id="overlay" v-on:close="showAlertConfirm=false;annulla()" v-on:conferma="showAlertConfirm=false; conferma()"/>
+        <AlertUnavaible v-if="showAlertUnavaible" id="overlay" v-on:close="showAlertUnavaible=false"/>
         <AlertError v-if="showAlertError" id="overlay" v-on:close="showAlertError=false"/>
         <div class="form">
            <div>
@@ -64,11 +65,13 @@ import AlertData from './alerts/alertDate'
 import AlertIncomplete from './alerts/alertIncomplete'
 import AlertConfirm from './alerts/alertConfirm'
 import AlertError from './alerts/alertError'
+import AlertUnavaible from './alerts/alertUnavaible'
 export default {
     name:'prenotazioni',
     data() {
         return {
             showAlertData:false,
+            showAlertUnavaible:false,
             username:'',
             luogo:'0',
             showAlertIncomplete:false,
@@ -220,6 +223,7 @@ export default {
         },
         LuogoScelto(id){
             this.luogo=id;
+
             if(this.formData.mydate!==null && this.orario !== null && this.intervallo!== 0){
                 if(this.$store.getters.getPrenotazioneByPenotazione(id,this.formData.mydate,this.orario,this.intervallo)){
                     console.log((this.$session.get('user')).service)
@@ -233,7 +237,12 @@ export default {
                         "username":this.username,
                         "orario":this.orario
                     }
-                    this.showAlertConfirm=true;
+                    if(this.$store.getters.isAvaible(this.prenotazione)){
+                        this.showAlertConfirm=true;
+                    }
+                    else{
+                        this.showAlertUnavaible=true
+                    }
                 }
                 else{
                     this.showAlertError=true;
@@ -255,7 +264,8 @@ export default {
         AlertIncomplete,
         AlertError,
         AlertConfirm,
-        VueTimepicker
+        VueTimepicker,
+        AlertUnavaible
     } 
 }
 </script>

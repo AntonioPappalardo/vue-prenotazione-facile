@@ -74,10 +74,10 @@ export const store =  new Vuex.Store({ //creazione dello store
         },
         CreateDependence:(state)=>(data,user,hour,luogo)=>{
             var b= new Date(data)
-            b.setdate(b.getDate()-7)
+            b.setDate(b.getDate()-7)
             var aweekpre=this.transformData(b)
             var c= new Date(data)
-            c.setdate(c.getDate()-14)
+            c.setDate(c.getDate()-14)
             var twoweekpre=this.transformData(c)
             var prenotazioni=state.Prenotazioni.filter(p=> (p.username==user) && (p.luogo==luogo));
             var pre= prenotazioni.find(prenotazione=> (prenotazione.data==aweekpre))
@@ -99,6 +99,20 @@ export const store =  new Vuex.Store({ //creazione dello store
                 else return false
             }
             else return false            
+        },
+        isAvaible:(state)=>(prenotazione)=>{
+            var pre=state.Prenotazioni.filter(prenotazioni=>(prenotazioni.username==prenotazione.username));
+            pre=pre.filter(prenotazioni=>(prenotazioni.data==prenotazione.data))
+            var avaible=true;
+            pre.forEach( function (el){
+                let oinit=(parseInt(el.orario.substring(0,2),10)*60)+parseInt(el.orario.substring(3,5),10);
+                let oend=oinit+el.intervallo;
+                let scelta_iniziale=(parseInt(prenotazione.orario.substring(0,2),10)*60)+parseInt(prenotazione.orario.substring(3,5),10);
+                let scelta_Intervallo=scelta_iniziale+parseInt(prenotazione.intervallo,10);
+                if(scelta_iniziale>oinit && scelta_iniziale<oend) {avaible=false; break;}
+                else if(scelta_Intervallo>oinit&& scelta_Intervallo<oend) {avaible=false; break;}
+            })
+            return unavaible
         }
 
 
