@@ -160,7 +160,6 @@ export default {
             }
             axios.post('https://prenotazionefacile.azurewebsites.net/api/PrenotaSignal',
             {"use":this.prenotazione},getAxiosConfig());
-            this.$store.dispatch('Prenota',this.prenotazione)
             
             var typeluogo=this.$store.getters.getTypeById(this.luogo);
             if(this.$store.getters.ExistDependence(this.formData.mydate,this.username,this.orario,typeluogo)){
