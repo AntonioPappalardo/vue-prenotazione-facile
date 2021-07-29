@@ -112,7 +112,7 @@ export const store =  new Vuex.Store({ //creazione dello store
                 if(scelta_iniziale>oinit && scelta_iniziale<oend) {avaible=false;}
                 else if(scelta_Intervallo>oinit&& scelta_Intervallo<oend) {avaible=false;}
             })
-            return unavaible
+            return avaible
         }
 
 
