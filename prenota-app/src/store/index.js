@@ -75,7 +75,7 @@ export const store =  new Vuex.Store({ //creazione dello store
         CreateDependence:(state)=>(data,user,hour,luogo)=>{
             var b= new Date(data)
             b.setDate(b.getDate()-7)
-            var aweekpre=this.transformData(b)
+            var aweekpre=transformData(b)
             var c= new Date(data)
             c.setDate(c.getDate()-14)
             var twoweekpre=this.transformData(c)
