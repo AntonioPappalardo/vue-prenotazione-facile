@@ -1,11 +1,20 @@
 <template>
     <div>
+            <h5 class="modal-header">Prenotazione </h5>
+            <div class="modal-body">
+                
+                <br>
+            
+            </div>
         
     </div>
 </template>
 <script>
 export default {
-    name:'AlertUnavaible',
+    name:'AlertPrenotazione',
+    props:{
+        data: Object
+    },
     methods: {
         ok(){
             this.$emit('close');
