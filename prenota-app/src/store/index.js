@@ -48,6 +48,9 @@ export const store =  new Vuex.Store({ //creazione dello store
             }
             return posti>pos;
         },
+        getPrenotazioneByID:(state)=>(id)=>{
+            return state.Prenotazioni.find(prenotazione=>(prenotazione.id==id))
+        },
         getCountPrenotazioni:(state)=>{
             return state.Prenotazioni.length + 1
         },
@@ -67,30 +70,33 @@ export const store =  new Vuex.Store({ //creazione dello store
             }
             else return false
         },
-        transformData(d){
-            var month= d.getMonth()+1<10 ? "0"+(d.getMonth()+1) : d.getMonth()+1
-            var day= d.getDate()<10 ? "0"+d.getDate(): d.getDate()
-            return(""+d.getFullYear()+"-"+month+"-"+day)
-        },
-        CreateDependence:(state)=>(data,user,hour,luogo)=>{
+        CreateDependence:(state,getters)=>(data,user,hour,luogo)=>{
             var b= new Date(data)
             b.setDate(b.getDate()-7)
-            var aweekpre=transformData(b)
+            var month= b.getMonth()+1<10 ? "0"+(b.getMonth()+1) : b.getMonth()+1
+            var day= b.getDate()<10 ? "0"+b.getDate(): b.getDate()
+            var aweekpre=""+b.getFullYear()+"-"+month+"-"+day
             var c= new Date(data)
             c.setDate(c.getDate()-14)
-            var twoweekpre=this.transformData(c)
-            var prenotazioni=state.Prenotazioni.filter(p=> (p.username==user) && (p.luogo==luogo));
+            
+            month= c.getMonth()+1<10 ? "0"+(c.getMonth()+1) : c.getMonth()+1
+            day= c.getDate()<10 ? "0"+c.getDate(): c.getDate()
+            var twoweekpre=""+c.getFullYear()+"-"+month+"-"+day
+            var prenotazioni=state.Prenotazioni.filter(p=> (p.username==user) && (getters.getLuogoById(p.luogo).type==luogo));
             var pre= prenotazioni.find(prenotazione=> (prenotazione.data==aweekpre))
             if(pre!=null){
+                console.log("PRIMA TROVATA")
                 var initdep=((parseInt(pre.orario.substring(0,2),10))*60)+(parseInt(pre.orario.substring(3,5),10))-30;
                 var enddep=((parseInt(pre.orario.substring(0,2),10))*60)+(parseInt(pre.orario.substring(3,5),10))+30;
-                hour=((parseInt(hour.substring(0,2),10))*60)+(parseInt(hour.substring(3,5),10))
+                var orario=""+hour+""
+                hour=((parseInt(orario.substring(0,2),10))*60)+(parseInt(orario.substring(3,5),10))
                 if((hour <= enddep)&&(hour>=initdep)){
+                    
                     pre= prenotazioni.find(prenotazione=> (prenotazione.data==twoweekpre))
                     if(pre!=null){
                         initdep=((parseInt(pre.orario.substring(0,2),10))*60)+(parseInt(pre.orario.substring(3,5),10))-30;
                         enddep=((parseInt(pre.orario.substring(0,2),10))*60)+(parseInt(pre.orario.substring(3,5),10))+30;
-                        hour=((parseInt(hour.substring(0,2),10))*60)+(parseInt(hour.substring(3,5),10))
+                        hour=((parseInt(orario.substring(0,2),10))*60)+(parseInt(orario.substring(3,5),10))
                         if((hour <= enddep)&&(hour>=initdep)) return true
                         else return false
                     }
@@ -98,7 +104,9 @@ export const store =  new Vuex.Store({ //creazione dello store
                 }
                 else return false
             }
-            else return false            
+            else {
+                console.log("PRIMA NON TROVATA")
+                return false}            
         },
         isAvaible:(state)=>(prenotazione)=>{
             var pre=state.Prenotazioni.filter(prenotazioni=>(prenotazioni.username==prenotazione.username));
@@ -149,6 +157,11 @@ export const store =  new Vuex.Store({ //creazione dello store
             state.Users[ind].service=user.service;
             
 
+        },
+        EliminaPrenotazione:(state,id)=>{
+            state.Prenotazioni = state.Prenotazioni.filter(function(item) {
+                return item.id !== id
+            })
         }
      },
     
@@ -176,6 +189,9 @@ export const store =  new Vuex.Store({ //creazione dello store
         },
         Updateoption({commit},user){
             commit('Updateoption',user)
+        },
+        EliminaPrenotazione({commit},id){
+            commit('EliminaPrenotazione',id)
         }  
     }
   

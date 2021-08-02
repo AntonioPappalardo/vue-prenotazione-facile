@@ -1,6 +1,7 @@
 <template>
         <div class="view-prenotazioni">
-        <div  class="prenotazione rounded-pill border border-primary" v-for="(pren,index) in prenotazioni" :key="index">
+            <AlertPrenotazione :data="this.prenID" v-if="showAlert" v-on:close="showAlert=false" id="overlay"/>
+        <div  class="prenotazione rounded-pill border border-primary" v-for="(pren,index) in prenotazioni" :key="index" @click="postSelezionato(pren.id)" >
             <div>{{pren.data}}</div>
             <div class="orariopren">
                 <div>Inizio: {{pren.orario}}</div>
@@ -11,12 +12,15 @@
         </div>
 </template>
 <script>
+import AlertPrenotazione from './alerts/alertPrenotazione.vue'
 export default {
     name:'bacheca',
     data() {
         return {
             username:'',
-            datacur:''
+            datacur:'',
+            showAlert:false,
+            prenID:0,
         }
     },
     beforeCreate(){
@@ -43,12 +47,18 @@ export default {
     methods: {
         getLuogo(id){
             return this.$store.getters.getLuogoById(id).nome;
+        },
+        postSelezionato(id){
+            this.prenID=id;
+            this.showAlert=true;
         }
     },
+    components:{
+        AlertPrenotazione
+    }
 }
 </script>
 <style lang="scss" scoped>
-
     .view-prenotazioni{
         width: 100%;
         height: calc(100vh - 250px);
@@ -66,6 +76,21 @@ export default {
             padding: 10px;
             border: 1px ridge rgb(66, 66, 66);
             background-color: rgba(255, 255, 255, 0.623);
+        }
+
+        #overlay {
+            position: fixed;
+            width: 100%;
+            height: 100%; 
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
     }
 
