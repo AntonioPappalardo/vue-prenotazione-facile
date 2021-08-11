@@ -84,6 +84,7 @@ export default {
             orario:"09:00",
             luoghi:[],
             isStudent:true,
+            sendmail:true,
             nprenotazione:0,
             prenotazione:'',
             optionmin:30,
@@ -100,6 +101,8 @@ export default {
         if (user.type==1) this.isStudent=true;
         else this.isStudent=false;
         this.formData.mydate=null;
+        this.sendmail=user.notification;
+
         this.username=user.username;
     },
     beforeCreate(){
@@ -135,6 +138,7 @@ export default {
                 "orario":this.orario
             }
             });
+            if(this.sendmail){
             var email;
             if (this.isStudent) email=""+this.username+"@studenti.unisa.it"
             else email=""+this.username+"@unisa.it" 
@@ -152,6 +156,7 @@ export default {
                 
             }
             });
+            }
             this.prenotazione={
                 "service":(this.$session.get('user')).service,
                 "occupati":(this.nprenotazione*100)/this.$store.getters.getLuogoById(this.luogo).posti,
