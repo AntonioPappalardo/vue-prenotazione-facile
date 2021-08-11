@@ -92,6 +92,7 @@ export default {
     },
     mounted() {
         var todayData = new Date();
+        todayData.setDate(todayData.getDate()+1);
         var datacur=this.transformData(todayData);
         this.today.mydate=datacur;
         console.log(this.today.mydate)
