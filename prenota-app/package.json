@@ -18,6 +18,7 @@
     "sass": "^1.32.8",
     "sass-loader": "^10.1.1",
     "vue": "^2.6.11",
+    "vue-mq": "^1.0.1",
     "vue-router": "^3.5.1",
     "vue-session": "^1.0.0",
     "vue2-timepicker": "^1.1.6",

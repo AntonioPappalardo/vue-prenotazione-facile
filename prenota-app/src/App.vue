@@ -3,7 +3,7 @@
     <div class="all" v-if="(this.$route.path!=='/') && (this.$route.path!=='/registrazione')"> 
       <Header/>
       <div class="content">
-        <div class="sidebar">
+        <div class="sidebar" v-if="$mq !== 'sm'">
           <div class="options">
             <div class="link"><router-link to="/bacheca">Bacheca</router-link></div>
             <div class="link"><router-link to="/prenotazione">Prenota</router-link></div>
