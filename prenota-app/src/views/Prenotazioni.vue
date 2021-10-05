@@ -7,10 +7,13 @@
         <AlertError v-if="showAlertError" id="overlay" v-on:close="showAlertError=false"/>
         <div class="form">
            <div class="riga">
-           <h5>GIORNO:</h5> <input type="date" v-model="formData.mydate" v-bind:min="today.mydate" />
+           <h5 v-if="$mq !== 'sm'">GIORNO:</h5> 
+           <p v-else>GIORNO:</p>
+            <input type="date" v-model="formData.mydate" v-bind:min="today.mydate" />
            </div>
            <div class="riga">
-            <h5>LUOGO:</h5>
+            <h5 v-if="$mq !== 'sm'">LUOGO:</h5>
+            <p v-else>LUOGO:</p>
             <select v-model="type" v-if="isStudent">
                         <option disabled value="0">Seleziona</option>
                         <option value="1">Mensa</option>
@@ -23,7 +26,10 @@
             </select>
            </div>
             <div class="riga">
-                <h5>ORARIO:</h5><vue-timepicker
+                <h5 v-if="$mq !== 'sm'">ORARIO:</h5>
+                <p v-else>ORARIO:</p>
+                
+                <vue-timepicker
                             format="HH:mm"
                             :minute-interval="15"
                             :hour-range="[9,10,11,12,13,14,15,16,17]"
@@ -32,8 +38,9 @@
                             </vue-timepicker>
             </div>
             <div class="riga">
-                <h5>INTERVALLO:</h5> 
-                        <input type="number"  v-bind:min="optionmin" v-bind:max="optionmax" step="15" v-model="intervallo" onkeydown="return false">
+                <h5 v-if="$mq !== 'sm'">INTERVALLO:</h5> 
+                <p v-else>INTERVALLO:</p>
+                <input type="number"  v-bind:min="optionmin" v-bind:max="optionmax" step="15" v-model="intervallo" onkeydown="return false">
             </div>
         </div>
 
@@ -286,15 +293,15 @@ export default {
     justify-items: center;
     .form{
         display:flex;
-        width: 70%;
+        width: 100%;
         flex-direction: column;
         justify-content: space-between;
         align-content: center;
         padding: 40px;
-        div{
+        .riga{
             display: grid;
             grid-template-columns: 50% 50%;
-            justify-items: end;
+            justify-items: center;
             width: 100%;
         }
         
