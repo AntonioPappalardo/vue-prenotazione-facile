@@ -1,12 +1,16 @@
 <template>
   <div class="header">
     <AlertUser  v-if="showUser" id="overlay" v-on:close="showUser=false"/>
+    
       <div class="user">
         <i class="far fa-user fa-2x" @click="showUser=true"></i>
         <!--
             @click mostrare l'alert con le opzioni possibili...
             
         -->
+      </div>
+      <div v-if="$mq === 'sm'">
+        aaa
       </div>
   </div>
 </template>
@@ -33,6 +37,8 @@ components:{
       height: 100px;
       display: flex;
       flex-direction: row-reverse;
+      justify-content: space-between;
+      
       padding: 40px;
       background-color: rgba(238, 112, 66, 0.52);
 

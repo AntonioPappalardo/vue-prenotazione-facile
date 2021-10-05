@@ -6,10 +6,10 @@
         <AlertUnavaible v-if="showAlertUnavaible" id="overlay" v-on:close="showAlertUnavaible=false"/>
         <AlertError v-if="showAlertError" id="overlay" v-on:close="showAlertError=false"/>
         <div class="form">
-           <div>
+           <div class="riga">
            <h5>GIORNO:</h5> <input type="date" v-model="formData.mydate" v-bind:min="today.mydate" />
            </div>
-           <div>
+           <div class="riga">
             <h5>LUOGO:</h5>
             <select v-model="type" v-if="isStudent">
                         <option disabled value="0">Seleziona</option>
@@ -22,7 +22,7 @@
                 <option selected value="1">Mensa</option>
             </select>
            </div>
-            <div>
+            <div class="riga">
                 <h5>ORARIO:</h5><vue-timepicker
                             format="HH:mm"
                             :minute-interval="15"
@@ -31,7 +31,7 @@
                             v-model="orario">
                             </vue-timepicker>
             </div>
-            <div>
+            <div class="riga">
                 <h5>INTERVALLO:</h5> 
                         <input type="number"  v-bind:min="optionmin" v-bind:max="optionmax" step="15" v-model="intervallo" onkeydown="return false">
             </div>

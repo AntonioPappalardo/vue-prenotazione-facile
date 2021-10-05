@@ -2,13 +2,19 @@
   <div id="app">
     <div class="all" v-if="(this.$route.path!=='/') && (this.$route.path!=='/registrazione')"> 
       <Header/>
-      <div class="content">
-        <div class="sidebar" v-if="$mq !== 'sm'">
+      <div class="content" v-if="$mq !== 'sm'">
+        <div class="sidebar" >
           <div class="options">
             <div class="link"><router-link to="/bacheca">Bacheca</router-link></div>
             <div class="link"><router-link to="/prenotazione">Prenota</router-link></div>
           </div>
         </div>
+        <div class="content2">
+          <router-view/>
+        </div>
+      </div>
+      <div class="content-mobile" v-else>
+        
         <div class="content2">
           <router-view/>
         </div>
@@ -97,6 +103,12 @@ export default {
     background-repeat: no-repeat; /* Do not repeat the image */
     background-size: cover; 
     
+    .content-mobile{
+      width: 100%;
+      height: 100%;
+      background-color: rgba(245, 245, 220, 0.65);
+      display: grid;
+    }
 
     .content{
       width: 100%;
