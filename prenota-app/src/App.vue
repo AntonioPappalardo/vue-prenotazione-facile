@@ -5,8 +5,8 @@
       <div class="content" v-if="$mq !== 'sm'">
         <div class="sidebar" >
           <div class="options">
-            <div class="link"><router-link to="/bacheca">Bacheca</router-link></div>
-            <div class="link"><router-link to="/prenotazione">Prenota</router-link></div>
+            <div class="link"><router-link to="/bacheca"><div class="rlink">Bacheca</div></router-link></div>
+            <div class="link"><router-link to="/prenotazione"><div class="rlink">Prenota</div></router-link></div>
           </div>
         </div>
         <div class="content2">
@@ -120,7 +120,7 @@ export default {
         
         display: flex;
         height: calc(100vh - 100px);
-        background-color: rgba(0, 255, 255, 0.52);
+        background-color: rgba(30, 129, 176, 0.52);
         vertical-align: middle;
         .options{
           width: 100%;
@@ -133,6 +133,13 @@ export default {
             height: 50px;
             justify-content: center;
             display: flex;
+            
+            .rlink{
+              display: block;
+              color:rgb(135, 62, 35);
+              font-weight: bold;
+              font-size: 18px;
+            }
           }
         }
       }

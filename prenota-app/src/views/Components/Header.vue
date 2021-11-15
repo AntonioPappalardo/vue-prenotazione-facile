@@ -1,7 +1,10 @@
 <template>
   <div class="header">
-    <AlertUser  v-if="showUser" id="overlay" v-on:close="showUser=false"/>
+    <div class="title">
+      Prenotazione-Facile
+    </div>
     <MenuMobile v-if="showMenu" id="overlay-menu" v-on:close="showMenu=false"/>
+    <AlertUser  v-if="showUser" id="overlay" v-on:close="showUser=false"/>
       <div class="user">
         <i class="far fa-user fa-2x" @click="showUser=true"></i>
         <!--
@@ -39,20 +42,40 @@ components:{
 .header{
       height: 100px;
       display: flex;
-      flex-direction: row-reverse;
+      flex-direction: row;
       justify-content: space-between;
       
       padding: 40px;
-      background-color: rgba(238, 112, 66, 0.52);
+      background-color: rgba(37, 150, 190, 0.52);
 
       align-items: center;
       justify-items: center;
 
+
+      .title{
+        font-size: 40px;
+        font-weight: bold;
+        justify-content: center;
+        display: flex;
+        width:100%;
+      }
+
+
       @media only screen and (max-width: 425px){
-        h2{
+      .header{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+      h2{
         font-size: 10px;
         font-weight: bold;
       }
+      .title{
+        font-size: 10px;
+        justify-content: flex-start;
+      }
+
       }
     
     }

@@ -115,7 +115,7 @@ export default {
 .modulo{
     height: 300px;
     width: 500px;
-    background-color: aquamarine;
+    background-color: rgb(118, 181, 197,0.9);
     border-radius: 15px;
     padding: 20px;
     display: grid;
