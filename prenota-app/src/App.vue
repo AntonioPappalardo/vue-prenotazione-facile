@@ -117,10 +117,9 @@ export default {
       display: grid;
       grid-template-columns: 200px calc(100vw - 200px);
       .sidebar{
-        
         display: flex;
         height: calc(100vh - 100px);
-        background-color: rgba(30, 129, 176, 0.52);
+        background-color: rgba(255, 255, 255, 0.75);
         vertical-align: middle;
         .options{
           width: 100%;
@@ -136,7 +135,7 @@ export default {
             
             .rlink{
               display: block;
-              color:rgb(135, 62, 35);
+              color:rgb(0, 0, 0);
               font-weight: bold;
               font-size: 18px;
             }
