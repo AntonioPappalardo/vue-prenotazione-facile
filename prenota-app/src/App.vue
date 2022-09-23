@@ -64,13 +64,16 @@ export default {
     }
   },
     mounted () {    
-      axios.get('https://prenotazionefacile.azurewebsites.net/api/Connessione?').then(response =>{
+      setTimeout(()=>{
+        axios.get('https://prenotazionefacile.azurewebsites.net/api/Connessione?').then(response =>{
       this.$store.dispatch('setUsers',response.data.users);
       this.$store.dispatch('setPrenotazioni',response.data.prenotazioni);
       this.$store.dispatch('setLuoghi',response.data.luoghi);
       this.$store.dispatch('setDependence',response.data.dependence)
       
       });
+      },15000)
+      
       this.connection.start().then(() => {
       console.log("SignalR connection established");
       });
