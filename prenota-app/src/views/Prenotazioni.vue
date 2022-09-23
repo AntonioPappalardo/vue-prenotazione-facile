@@ -99,6 +99,7 @@ export default {
         }
     },
     mounted() {
+        setTimeout(() => {}, 15000);
         var todayData = new Date();
         todayData.setDate(todayData.getDate()+1);
         var datacur=this.transformData(todayData);
