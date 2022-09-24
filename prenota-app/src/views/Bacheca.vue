@@ -1,7 +1,7 @@
 <template>
         <div class="view-prenotazioni">
             <AlertPrenotazione :data="this.prenID" v-if="showAlert" v-on:close="showAlert=false" id="overlay"/>
-        <div  class="prenotazione rounded-pill border border-primary" v-for="(pren,index) in prenotazioni" :key="index" @click="postSelezionato(pren.id)" >
+        <div  class="prenotazione" v-for="(pren,index) in prenotazioni" :key="index" @click="postSelezionato(pren.id)" >
             <div>{{pren.data}}</div>
             <div class="orariopren">
                 <div>Inizio: {{pren.orario}}</div>
@@ -64,6 +64,7 @@ export default {
         height: calc(100vh - 250px);
         display: grid;
         overflow-y: scroll;
+
         grid-row-gap: 10px;
         grid-auto-rows: min-content;
         padding: 5px;
@@ -75,7 +76,7 @@ export default {
             align-items: center;
             padding: 10px;
             border: 1px ridge rgb(150, 126, 118);
-            background-color: rgb(215, 192, 174,0.7);
+            background-color: rgb(215, 192, 174);
         }
 
         #overlay {

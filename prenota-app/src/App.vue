@@ -119,7 +119,7 @@ export default {
       .sidebar{
         display: flex;
         height: calc(100vh - 100px);
-        background-color: rgba(238, 227, 203, 0.7);
+        background-color: rgba(238, 227, 203);
         vertical-align: middle;
         .options{
           width: 100%;

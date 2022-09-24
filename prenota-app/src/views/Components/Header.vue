@@ -45,7 +45,7 @@ components:{
       flex-direction: row;
       justify-content: space-between;
       padding: 40px;
-      background-color: rgb(183, 196, 207,0.7);
+      background-color: rgb(183, 196, 207);
 
       align-items: center;
       justify-items: center;
