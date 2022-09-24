@@ -299,6 +299,7 @@ export default {
         justify-content: space-between;
         align-content: center;
         padding: 40px;
+        background-color: rgb(238, 227, 203);
         .riga{
             display: grid;
             grid-template-columns: 50% 50%;

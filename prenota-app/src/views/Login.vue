@@ -102,7 +102,7 @@ export default {
 
     .login{
         
-        background-color: rgba(183, 196, 207, 0.7);
+        background-color: rgba(183, 196, 207);
         border-radius: 15px;
         padding: 15px;
         display: grid;
