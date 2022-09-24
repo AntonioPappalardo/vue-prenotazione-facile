@@ -69,13 +69,15 @@ export default {
         grid-auto-rows: min-content;
         padding: 5px;
         margin-top:50px ;
+        justify-items: center;
         .prenotazione{
+            width: 90%;
             display: grid;
             grid-template-columns: 100px calc(100% - 200px) 100px;
             justify-items: center;
             align-items: center;
             padding: 10px;
-            border: 1px ridge rgb(150, 126, 118);
+            border-radius: 20px;
             background-color: rgb(215, 192, 174);
         }
 

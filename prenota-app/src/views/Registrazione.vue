@@ -1,9 +1,10 @@
 <template>
-    <div class="modulo">
+    <div>
+    <div class="modulo" v-if="$mq !== 'sm'">
         <div class="alert-danger" v-if="errore" >
                 {{errormsg}}
             </div>
-        <div class="dati">
+        <div class="dati" >
             <div class="username-registrazione">
                 Username: <input type="text" v-model="username" id="username" class="input"> <div>
                     <select v-model="type">
@@ -26,9 +27,45 @@
         </div>
         <div class="send">
             <button class="btn btn-outline-dark" @click="Registra()">
-                registra
+                Registra
             </button>
+            <button class="btn btn-outline-dark" @click="annulla()">Annulla</button>
+
         </div>
+    </div>
+    <div class="modulo-mobile" v-else>
+        <div class="alert-danger" v-if="errore" >
+                {{errormsg}}
+            </div>
+        <div class="dati" >
+            <div class="username-registrazione">
+                Username: <input type="text" v-model="username" id="username" class="input"> <div>
+                    <select v-model="type">
+                        <option disabled value="">Seleziona</option>
+                        <option value="1">@studenti.unisa.it</option>
+                        <option value="2">@unisa.it</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="password-registrazione">
+                Password:<input type="password" v-model="password" id="password" class="input">
+            </div>
+        </div>
+        <div class="options-registazione">
+            <input type="checkbox" v-model="option1" id="option1"> 
+            <label for="option1"> Ricevere notifiche</label><br>
+            <input type="checkbox" v-model="option2" id="option2"> 
+            <label for="option2">Servizi intelligenti</label><br>
+        </div>
+        <div class="send">
+            <button class="btn btn-outline-dark" @click="Registra()">
+                Registra
+            </button>
+            <button class="btn btn-outline-dark" @click="annulla()">Annulla</button>
+
+        </div>
+    </div>
     </div>
 </template>
 <script>
@@ -47,6 +84,9 @@ export default {
         }
     },
     methods: {
+        annulla(){
+            this.$router.push("/")
+        },
         Registra(){
             var passre=new RegExp("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,32}$");
             if(this.username==""||this.$store.getters.getUserByUser(this.username)){
@@ -138,8 +178,48 @@ export default {
          grid-template-columns: 100px 180px 150px;
          column-gap: 10px;
          align-items: center
-
         }
+
+
+    }
+    .send{
+        display: grid;
+        grid-template-columns: 100px 100px 150px;
+        column-gap: 20px;
+        align-items: center
+    }
+}
+.modulo-mobile{
+    display: grid;
+    grid-row-gap: 30px;
+    height: 100%;
+    width: 100%;
+    padding: 20px;
+    background-color: rgb(150, 126, 118);
+    border-radius: 10px;
+    overflow-y: scroll;
+    .dati{
+        .input{
+            border-radius:10px;
+        }
+        display: grid;
+        grid-row-gap: 20px;
+    }
+    .username-registrazione{
+        display: grid;
+        grid-row-gap: 5px;
+        align-items: center
+    }
+    .password-registrazione{
+        display: grid;
+        grid-row-gap: 5px;
+        align-items: center
+
+    }
+    .send{
+        display: grid;
+        grid-row-gap: 5px;
+        align-items: center
     }
 }
 </style>

@@ -10,7 +10,9 @@ Vue.prototype.$axios=axios  //dichiarazione dell’uso della componente axios
 
 Vue.config.productionTip = false
 Vue.use(VueSession)  //istruzione che ci abilita la sessione
-Vue.use(loading)
+Vue.use(loading,{
+  bg: '#B3EEE3CB',
+})
 Vue.use(VueMq, {
   breakpoints: {
     sm: 450,

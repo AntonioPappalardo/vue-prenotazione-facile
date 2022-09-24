@@ -45,7 +45,7 @@
         </div>
 
         <div class="luoghi-list">
-        <div  class="luogo rounded-pill border border-primary" v-for="(place,index) in luoghi" :key="index" @click="LuogoScelto(place.id)">
+        <div  class="luogo" v-for="(place,index) in luoghi" :key="index" @click="LuogoScelto(place.id)">
             {{place.nome}}
         </div>
         </div>
@@ -294,12 +294,15 @@ export default {
     justify-items: center;
     .form{
         display:flex;
-        width: 100%;
+        width: 90%;
         flex-direction: column;
         justify-content: space-between;
         align-content: center;
+        margin: 20px;
         padding: 40px;
-        background-color: rgb(238, 227, 203);
+        border-radius: 25px;
+
+        background-color:rgb(215, 192, 174) ;
         .riga{
             display: grid;
             grid-template-columns: 50% 50%;
@@ -310,20 +313,22 @@ export default {
     }
     .luoghi-list{
         width: 100%;
-        
         overflow-y: scroll;
         display: grid;
         grid-row-gap: 10px;
         grid-auto-rows: min-content;
         padding: 5px;
         align-content: center;
+        justify-items: center;
         .luogo{
+            width: 90%;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 10px;
-            border: 1px ridge rgb(66, 66, 66);
-            background-color: rgba(255, 255, 255, 0.623);
+            border-radius: 15px;
+
+            background-color: rgb(150, 126, 118);
         }
     }
 }

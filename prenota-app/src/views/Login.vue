@@ -53,21 +53,25 @@ export default {
     },
     methods:{
         verifyLogin(){
-            this.$isLoading(true) 
-            this.user=this.$store.getters.getUserByLogin(this.username,this.password)
-            if(this.user==null){this.errore=true}
-            else{
-                this.errore=false;
-                if(!this.user.confirmed) {
-                    this.code=""+this.user.code
-                    this.showAlert=true
-                } 
-                else{             
-                this.$session.start();
-                this.$session.set('user',this.user)
-                this.$router.push("/bacheca")
-                }
-            }
+            setTimeout(() => {
+                this.$isLoading(false)
+                this.user=this.$store.getters.getUserByLogin(this.username,this.password)
+                if(this.user==null){this.errore=true}
+                else{
+                    this.errore=false;
+                    if(!this.user.confirmed) {
+                        this.code=""+this.user.code
+                        this.showAlert=true
+                    } 
+                    else{             
+                    this.$session.start();
+                    this.$session.set('user',this.user)
+                    this.$router.push("/bacheca")
+                    }
+                }     
+            }, 5000)
+            this.$isLoading(true)
+            
         },
         islog(){
              return this.$session.exists()

@@ -116,6 +116,7 @@ export default {
       background-color: rgba(245, 245, 220, 0.65);
       display: grid;
       grid-template-columns: 200px calc(100vw - 200px);
+      align-items: center;
       .sidebar{
         display: flex;
         height: calc(100vh - 100px);

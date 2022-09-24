@@ -26,7 +26,9 @@ _vue["default"].config.productionTip = false;
 _vue["default"].use(_vueSession["default"]); //istruzione che ci abilita la sessione
 
 
-_vue["default"].use(_vuejsLoadingScreen["default"]);
+_vue["default"].use(_vuejsLoadingScreen["default"], {
+  bg: '#B3EEE3CB'
+});
 
 _vue["default"].use(_vueMq["default"], {
   breakpoints: {
