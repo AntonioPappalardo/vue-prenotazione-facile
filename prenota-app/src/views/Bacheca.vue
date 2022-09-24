@@ -74,8 +74,8 @@ export default {
             justify-items: center;
             align-items: center;
             padding: 10px;
-            border: 1px ridge rgb(66, 66, 66);
-            background-color: rgba(255, 255, 255, 0.623);
+            border: 1px ridge rgb(150, 126, 118);
+            background-color: rgb(215, 192, 174,0.7);
         }
 
         #overlay {

@@ -10,6 +10,8 @@ var _vueSession = _interopRequireDefault(require("vue-session"));
 
 var _axios = _interopRequireDefault(require("axios"));
 
+var _vuejsLoadingScreen = _interopRequireDefault(require("vuejs-loading-screen"));
+
 var _vueMq = _interopRequireDefault(require("vue-mq"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
@@ -23,6 +25,8 @@ _vue["default"].config.productionTip = false;
 
 _vue["default"].use(_vueSession["default"]); //istruzione che ci abilita la sessione
 
+
+_vue["default"].use(_vuejsLoadingScreen["default"]);
 
 _vue["default"].use(_vueMq["default"], {
   breakpoints: {

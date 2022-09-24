@@ -64,16 +64,13 @@ export default {
     }
   },
     mounted () {    
-      setTimeout(()=>{
-        axios.get('https://prenotazionefacile.azurewebsites.net/api/Connessione?').then(response =>{
+      axios.get('https://prenotazionefacile.azurewebsites.net/api/Connessione?').then(response =>{
       this.$store.dispatch('setUsers',response.data.users);
       this.$store.dispatch('setPrenotazioni',response.data.prenotazioni);
       this.$store.dispatch('setLuoghi',response.data.luoghi);
       this.$store.dispatch('setDependence',response.data.dependence)
       
       });
-      },15000)
-      
       this.connection.start().then(() => {
       console.log("SignalR connection established");
       });
@@ -122,7 +119,7 @@ export default {
       .sidebar{
         display: flex;
         height: calc(100vh - 100px);
-        background-color: rgba(255, 255, 255, 0.75);
+        background-color: rgba(238, 227, 203, 0.7);
         vertical-align: middle;
         .options{
           width: 100%;

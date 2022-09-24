@@ -53,6 +53,7 @@ export default {
     },
     methods:{
         verifyLogin(){
+            this.$isLoading(true) 
             this.user=this.$store.getters.getUserByLogin(this.username,this.password)
             if(this.user==null){this.errore=true}
             else{
@@ -100,7 +101,8 @@ export default {
     gap: 15px;
 
     .login{
-        background-color: rgba(255, 1, 1, 0.623);
+        
+        background-color: rgba(183, 196, 207, 0.7);
         border-radius: 15px;
         padding: 15px;
         display: grid;
